@@ -1236,13 +1236,13 @@ function Home({
       color: c.text,
       lineHeight: 1.2
     }
-  }, today.total), /*#__PURE__*/React.createElement("div", {
+  }, [...new Set(session.map(w => w.id))].length), /*#__PURE__*/React.createElement("div", {
     style: {
       fontFamily: f.ui,
       fontSize: "0.55rem",
-      color: today.total > 0 ? c.ok : c.pale
+      color: session.length > 0 ? c.ok : c.pale
     }
-  }, today.total > 0 ? `${Math.round(today.ok / today.total * 100)}%` : "开始吧"))), /*#__PURE__*/React.createElement("div", {
+  }, session.length > 0 ? "词" : "开始吧"))), /*#__PURE__*/React.createElement("div", {
     style: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
