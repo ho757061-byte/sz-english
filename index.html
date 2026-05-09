@@ -540,15 +540,22 @@ const recordResult=(wid, correct, typed, mode)=>{
   prog.push({wid, correct, ans:typed});
   setToday(t=>{
     const nt={total:t.total+1, ok:t.ok+(correct?1:0)};
-    // save to supabase debounced
     const newErrors = (!correct && mode==="dictation") ? [...errors,{wid,typed,date:todayStr()}] : errors;
     if(!correct && mode==="dictation") setErrors(newErrors);
     clearTimeout(saveRef.current);
     saveRef.current=setTimeout(()=>{
-      saveSessionData(sdId,{today_date:todayStr(),today_total:nt.total,today_ok:nt.ok,errors:newErrors});
+      saveSessionData(sdId,{today_date:todayStr(),today_total:nt.total,today_ok:nt.ok,errors:newErrors,session_ids:session.map(w=>w.id)});
     },500);
     return nt;
   });
+};
+
+// wrap setSession to also persist to Supabase
+const updateSession=(words)=>{
+  setSession(words);
+  if(sdId){
+    saveSessionData(sdId,{today_date:todayStr(),today_total:today.total,today_ok:today.ok,errors,session_ids:words.map(w=>w.id)});
+  }
 };
 
 useEffect(()=>{Promise.all([getCursor(),getNotes(),getSessionData()]).then(([cur,nt,sd])=>{
@@ -556,9 +563,14 @@ useEffect(()=>{Promise.all([getCursor(),getNotes(),getSessionData()]).then(([cur
   setNotes(nt.data);setNotesId(nt.id);
   setSdId(sd.id);
   setErrors(sd.errors||[]);
-  // reset today if different date
-  if(sd.today_date===todayStr()){setToday({total:sd.today_total||0,ok:sd.today_ok||0});}
-  else{setToday({total:0,ok:0});}
+  if(sd.today_date===todayStr()){
+    setToday({total:sd.today_total||0,ok:sd.today_ok||0});
+    // restore session from saved IDs
+    if(sd.session_ids&&sd.session_ids.length>0){
+      const restored=sd.session_ids.map(id=>WORDS.find(w=>w.id===id)).filter(Boolean);
+      setSession(restored);
+    }
+  } else{setToday({total:0,ok:0});}
   setLoading(false);
 });},[]);
 
@@ -566,7 +578,7 @@ if(loading) return <div style={{fontFamily:f.ui,background:c.bg,minHeight:"100vh
 
 return <div style={{fontFamily:f.ui,background:c.bg,minHeight:"100vh",padding:wide?"0 32px 24px":"0 16px 16px",maxWidth:wide?640:480,margin:"0 auto",boxSizing:"border-box",color:c.text,lineHeight:1.6,fontSize:wide?"1.05rem":"1rem"}}>
 {view==="home"&&<Home today={today} setView={setView} session={session} cursor={cursor} total={ORDERED.length}/>}
-{view==="study"&&<StudyView goBack={()=>setView("home")} session={session} setSession={setSession} cursor={cursor} setCursor={setCursor} cursorId={cursorId}/>}
+{view==="study"&&<StudyView goBack={()=>setView("home")} session={session} setSession={updateSession} cursor={cursor} setCursor={setCursor} cursorId={cursorId}/>}
 {view==="context"&&(has?<ContextQuiz goBack={()=>setView("home")} session={session} record={recordResult}/>:<NeedSession goBack={()=>setView("home")} onGoStudy={()=>setView("study")}/>)}
 {view==="dictation"&&(has?<Dictation goBack={()=>setView("home")} session={session} record={recordResult}/>:<NeedSession goBack={()=>setView("home")} onGoStudy={()=>setView("study")}/>)}
 {view==="test"&&(has?<Test goBack={()=>setView("home")} session={session} record={recordResult}/>:<NeedSession goBack={()=>setView("home")} onGoStudy={()=>setView("study")}/>)}
