@@ -1843,7 +1843,7 @@ function ContextQuiz({
   const cur = pool[idx];
   const sent = cur ? zheSentences[cur.id] : null;
   const check = () => {
-    if (!cur || result) return;
+    if (!cur || result || !input.trim()) return;
     const ok = input.trim().toLowerCase() === sent.answer.toLowerCase();
     setResult(ok ? "ok" : "no");
     setSt(s => ({
@@ -2195,7 +2195,7 @@ function Dictation({
     }
   }, [idx, result]);
   const check = () => {
-    if (!cur || result) return;
+    if (!cur || result || !input.trim()) return;
     const ok = input.trim().toLowerCase() === cur.english.toLowerCase();
     setResult(ok ? "ok" : "no");
     setSt(s => ({
@@ -2457,7 +2457,7 @@ function Test({
   }, [session]);
   const cur = pool[idx];
   const check = () => {
-    if (!cur || result) return;
+    if (!cur || result || !input.trim()) return;
     const ok = input.trim().toLowerCase() === cur.english.toLowerCase();
     setResult(ok ? "ok" : "no");
     setSt(s => ({
