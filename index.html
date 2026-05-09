@@ -256,10 +256,10 @@ return <div>
 
 // ── Study (sequential, fixes: click=play sound, prev/next buttons, last word handling) ──
 function StudyView({goBack,session,setSession,cursor,setCursor,cursorId}){
-const [phase,setPhase]=useState(session.length>0?"cards":"setup");
+const [phase,setPhase]=useState("setup");
 const [count,setCount]=useState(10);
-const [pool,setPool]=useState(session.length>0?session:[]);
-const [origCount,setOrigCount]=useState(session.length>0?[...new Set(session.map(w=>w.id))].length:0);
+const [pool,setPool]=useState([]);
+const [origCount,setOrigCount]=useState(0);
 const [idx,setIdx]=useState(0);
 const [flipped,setFlipped]=useState(false);
 const [showInfo,setShowInfo]=useState(false);
@@ -270,7 +270,7 @@ const start=()=>{
 const c2=Math.min(count,remaining);
 const words=ORDERED.slice(cursor,cursor+c2);
 if(!words.length)return;
-setPool(words);setSession(words);setOrigCount(c2);setIdx(0);setFlipped(false);setShowInfo(false);setPhase("cards");
+setPool(words);setSession([...session,...words]);setOrigCount(c2);setIdx(0);setFlipped(false);setShowInfo(false);setPhase("cards");
 };
 
 const finish=()=>{
@@ -306,6 +306,7 @@ return <div>
   <div style={{fontFamily:f.ui,fontSize:"0.78rem",color:c.dim,marginBottom:8}}>进度 {cursor}/{ORDERED.length}</div>
   <div style={{fontFamily:f.ui,fontSize:"0.85rem",color:c.text,marginBottom:4}}>接下来：{[...new Set(ORDERED.slice(cursor,cursor+Math.min(count,remaining)).map(w=>w.tp))].join(" → ")}</div>
   <div style={{fontFamily:f.ui,fontSize:"0.75rem",color:c.pale}}>剩余 {remaining} 词</div>
+  {session.length>0&&<div style={{fontFamily:f.ui,fontSize:"0.75rem",color:c.ok,marginTop:6}}>今日已有 {[...new Set(session.map(w=>w.id))].length} 词</div>}
 </div>
 <div style={{fontFamily:f.ui,fontSize:"0.78rem",color:c.dim,textAlign:"center",marginBottom:10}}>本次学几个</div>
 <div style={{display:"flex",justifyContent:"center",gap:10,marginBottom:30}}>
