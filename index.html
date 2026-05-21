@@ -2681,6 +2681,10 @@ function Wrong({
   const errWids = [...new Set((errors || []).map(e => e.wid))];
   const allWids = [...new Set([...memWids, ...errWids])];
   const list = allWids.map(id => WORDS.find(x => x.id === id)).filter(Boolean);
+  // sort by latest error date descending (newest first)
+  const latestDate = {};
+  (errors || []).forEach(e => { if (!latestDate[e.wid] || e.date > latestDate[e.wid]) latestDate[e.wid] = e.date; });
+  list.sort((a, b) => (latestDate[b.id] || '').localeCompare(latestDate[a.id] || ''));
   // get last wrong spelling for each word from errors
   const lastTyped = {};
   (errors || []).forEach(e => {
