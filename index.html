@@ -1610,7 +1610,15 @@ function Dictation({
       color: c.text,
       marginBottom: 20
     }
-  }, cur.chinese), /*#__PURE__*/React.createElement("button", {
+  }, cur.chinese), cur.pos && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: f.ui,
+      fontSize: "0.68rem",
+      color: c.pale,
+      marginTop: 6,
+      marginBottom: 4
+    }
+  }, cur.pos), /*#__PURE__*/React.createElement("button", {
     onClick: () => speak(cur.english, spd),
     style: {
       background: "rgba(255,255,255,0.45)",
