@@ -12,6 +12,7 @@
 </head>
 <body>
 <div id="root"></div>
+<a href="writing.html" style="position:fixed;right:14px;bottom:14px;z-index:999;background:#475569;color:#fff;text-decoration:none;font-size:13px;padding:8px 14px;border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,.18);font-family:sans-serif;">✍️ 雅思镜子</a>
 <script>
 const {
   useState,
@@ -19,12 +20,9 @@ const {
   useRef
 } = React;
 
-// ── Supabase config ──
-const SB_URL = "https://avrhxewilmfclpxxhrts.supabase.co";
-const SB_KEY = "sb_publishable_mRDHMCrFheJThSstauc0tg_VDvenRdf";
+// ── 数据走窝的公开走廊(/api/sze),钥匙藏在服务器端,前端零秘密 ──
+const SB_URL = "https://zhenest.shuozhe.trade/api/sze";
 const sbH = {
-  apikey: SB_KEY,
-  Authorization: `Bearer ${SB_KEY}`,
   "Content-Type": "application/json"
 };
 async function sbGet(path) {
