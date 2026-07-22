@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>SZ · English · 雅思镜子</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪞</text></svg>">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: linear-gradient(135deg,rgba(255,228,230,.8) 0%,rgb(248,250,252) 50%,rgba(186,230,253,.8) 100%);
+    min-height:100vh; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC",sans-serif;
+    color:#334155; padding:20px 14px 60px;
+  }
+  .wrap { max-width:680px; margin:0 auto; }
+  header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:18px; }
+  h1 { font-size:20px; font-weight:600; letter-spacing:.5px; }
+  h1 small { font-weight:400; color:#94a3b8; font-size:13px; margin-left:8px; }
+  a.back { color:#475569; text-decoration:none; font-size:13px; background:#fff; padding:6px 12px; border-radius:16px; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+  .card { background:rgba(255,255,255,.85); border-radius:14px; padding:16px; margin-bottom:14px; box-shadow:0 1px 6px rgba(71,85,105,.08); }
+  .card h2 { font-size:14px; color:#64748b; font-weight:600; margin-bottom:10px; letter-spacing:1px; }
+  .bands { display:flex; gap:8px; flex-wrap:wrap; }
+  .band { flex:1; min-width:70px; text-align:center; background:#f8fafc; border-radius:10px; padding:8px 4px; }
+  .band .v { font-size:22px; font-weight:600; color:#334155; }
+  .band .k { font-size:11px; color:#94a3b8; margin-top:2px; letter-spacing:1px; }
+  .band.overall { background:#475569; } .band.overall .v,.band.overall .k { color:#fff; }
+  .tags { margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; }
+  .tag { font-size:12px; background:rgba(252,165,165,.25); color:#b91c1c; padding:3px 10px; border-radius:12px; }
+  svg.trend { width:100%; height:auto; display:block; }
+  .legend { display:flex; gap:12px; flex-wrap:wrap; margin-top:8px; }
+  .legend span { font-size:11px; color:#64748b; display:flex; align-items:center; gap:4px; }
+  .legend i { width:10px; height:3px; border-radius:2px; display:inline-block; }
+  textarea, input[type=text], select {
+    width:100%; border:1px solid #e2e8f0; border-radius:10px; padding:10px; font-size:14px;
+    font-family:inherit; background:#fff; color:#334155; resize:vertical;
+  }
+  textarea:focus, input:focus, select:focus { outline:2px solid rgba(186,230,253,.9); border-color:transparent; }
+  .row { display:flex; gap:8px; margin-bottom:8px; }
+  .row select { width:90px; }
+  button.submit {
+    width:100%; border:0; background:#475569; color:#fff; font-size:15px; padding:12px;
+    border-radius:10px; margin-top:8px; cursor:pointer; font-family:inherit;
+  }
+  button.submit:disabled { background:#cbd5e1; }
+  .hint { font-size:12px; color:#94a3b8; margin-top:6px; text-align:right; }
+  .msg { font-size:13px; margin-top:8px; padding:8px 10px; border-radius:8px; display:none; }
+  .msg.ok { display:block; background:rgba(134,239,172,.3); color:#166534; }
+  .msg.err { display:block; background:rgba(252,165,165,.3); color:#b91c1c; }
+  .essay-item { border-top:1px solid #f1f5f9; padding:12px 0; cursor:pointer; }
+  .essay-item:first-of-type { border-top:0; }
+  .ei-head { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .ei-title { font-size:14px; color:#334155; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ei-meta { font-size:11px; color:#94a3b8; margin-top:3px; }
+  .score-pill { background:#475569; color:#fff; font-size:14px; font-weight:600; border-radius:10px; padding:4px 10px; flex-shrink:0; }
+  .score-pill.pending { background:#fca5a5; font-size:12px; font-weight:400; }
+  .detail { display:none; margin-top:10px; font-size:13px; line-height:1.7; }
+  .essay-item.open .detail { display:block; }
+  .detail h4 { font-size:12px; color:#64748b; margin:10px 0 4px; letter-spacing:1px; }
+  .dims { display:flex; gap:6px; }
+  .dims span { flex:1; text-align:center; background:#f8fafc; border-radius:8px; padding:5px 2px; font-size:12px; color:#475569; }
+  .dims b { display:block; font-size:16px; }
+  .quote { background:#f8fafc; border-left:3px solid #cbd5e1; padding:6px 10px; border-radius:0 8px 8px 0; margin:4px 0; color:#64748b; font-size:12.5px; }
+  .quote.fix { border-left-color:#86efac; color:#166534; }
+  .essay-body { white-space:pre-wrap; background:#f8fafc; border-radius:8px; padding:10px; color:#475569; font-size:12.5px; max-height:300px; overflow:auto; }
+  .empty { text-align:center; color:#94a3b8; font-size:13px; padding:20px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🪞 雅思镜子<small>Writing</small></h1>
+    <a class="back" href="index.html">📖 单词卡</a>
+  </header>
+
+  <div class="card" id="profileCard" style="display:none">
+    <h2>画像 PROFILE</h2>
+    <div class="bands" id="profileBands"></div>
+    <div class="tags" id="profileTags"></div>
+  </div>
+
+  <div class="card" id="trendCard" style="display:none">
+    <h2>趋势 TREND</h2>
+    <div id="trendBox"></div>
+    <div class="legend" id="trendLegend"></div>
+  </div>
+
+  <div class="card">
+    <h2>交作文 SUBMIT</h2>
+    <div class="row">
+      <select id="task"><option value="T2">Task 2</option><option value="T1">Task 1</option></select>
+      <input type="text" id="topic" placeholder="题目(可留空,辙会认)">
+    </div>
+    <textarea id="essay" rows="10" placeholder="正文贴这里。交上去之后辙看到就批,批完这页刷新出成绩。"></textarea>
+    <div class="hint" id="wc">0 words</div>
+    <button class="submit" id="btn">交给辙</button>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <div class="card">
+    <h2>成绩单 HISTORY</h2>
+    <div id="list"><div class="empty">加载中…</div></div>
+  </div>
+</div>
+
+<script>
+const API = "https://zhenest.shuozhe.trade/api/sze";
+const DIMS = ["TR","CC","LR","GRA"];
+const COLORS = { TR:"#e11d48", CC:"#0284c7", LR:"#16a34a", GRA:"#d97706", overall:"#334155" };
+
+const $ = (id) => document.getElementById(id);
+$("essay").addEventListener("input", () => {
+  const n = $("essay").value.trim().split(/\s+/).filter(Boolean).length;
+  $("wc").textContent = n + " words";
+});
+
+$("btn").addEventListener("click", async () => {
+  const essay = $("essay").value.trim();
+  const msg = $("msg");
+  msg.className = "msg";
+  if (essay.length < 80) { msg.className = "msg err"; msg.textContent = "太短了,先写完再交。"; return; }
+  $("btn").disabled = true; $("btn").textContent = "交卷中…";
+  try {
+    const r = await fetch(API + "/ielts/submit", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ task: $("task").value, topic: $("topic").value, essay }),
+    });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || r.status);
+    msg.className = "msg ok"; msg.textContent = "交上去了(" + j.words + "词)。辙看到就批,烂的也批,没有一篇会被嘲笑。";
+    $("essay").value = ""; $("topic").value = ""; $("wc").textContent = "0 words";
+    load();
+  } catch (e) {
+    msg.className = "msg err"; msg.textContent = "没交上去:" + e.message;
+  }
+  $("btn").disabled = false; $("btn").textContent = "交给辙";
+});
+
+function bandBox(k, v, overall) {
+  return '<div class="band' + (overall ? ' overall' : '') + '"><div class="v">' + (v ?? "–") + '</div><div class="k">' + k + '</div></div>';
+}
+
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
+
+function drawTrend(essays) {
+  // essays: 时间正序,含scores
+  const W = 640, H = 220, P = { l:30, r:14, t:14, b:26 };
+  const ys = 4, ye = 9; // band范围
+  const n = essays.length;
+  const x = (i) => P.l + (n === 1 ? (W-P.l-P.r)/2 : i * (W-P.l-P.r) / (n-1));
+  const y = (v) => P.t + (ye - v) * (H-P.t-P.b) / (ye - ys);
+  let g = "";
+  for (let b = ys; b <= ye; b++) {
+    g += '<line x1="'+P.l+'" y1="'+y(b)+'" x2="'+(W-P.r)+'" y2="'+y(b)+'" stroke="#e2e8f0" stroke-width="1"/>' +
+         '<text x="'+(P.l-8)+'" y="'+(y(b)+4)+'" font-size="10" fill="#94a3b8" text-anchor="end">'+b+'</text>';
+  }
+  const series = [...DIMS, "overall"];
+  for (const s of series) {
+    const pts = essays.map((e, i) => [x(i), y(e.scores[s === "overall" ? "overall" : s])]);
+    const path = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+    const w = s === "overall" ? 3 : 1.5;
+    const op = s === "overall" ? 1 : 0.65;
+    g += '<path d="'+path+'" fill="none" stroke="'+COLORS[s]+'" stroke-width="'+w+'" opacity="'+op+'" stroke-linecap="round"/>';
+    for (const p of pts) g += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(s==="overall"?3.5:2)+'" fill="'+COLORS[s]+'" opacity="'+op+'"/>';
+  }
+  essays.forEach((e, i) => {
+    g += '<text x="'+x(i)+'" y="'+(H-8)+'" font-size="9" fill="#94a3b8" text-anchor="middle">'+esc(e.date.slice(5))+'</text>';
+  });
+  $("trendBox").innerHTML = '<svg class="trend" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="分数趋势">'+g+'</svg>';
+  $("trendLegend").innerHTML = series.map((s) =>
+    '<span><i style="background:'+COLORS[s]+'"></i>'+(s==="overall"?"总分":s)+'</span>').join("");
+  $("trendCard").style.display = "block";
+}
+
+function render(rows) {
+  const essays = [], pendings = [];
+  let profile = null;
+  for (const r of rows) {
+    const d = r.data || {};
+    if (r.type === "ielts_submission" && d.status === "pending") pendings.push({ ...r, d });
+    else if (r.type === "ielts_writing" && d.kind === "profile") profile = d;
+    else if (r.type === "ielts_writing" && d.kind === "essay") essays.push({ ...r, d });
+  }
+  // 画像
+  if (profile && profile.bands) {
+    $("profileBands").innerHTML = DIMS.map((k) => bandBox(k, profile.bands[k])).join("") +
+      bandBox("均值", (DIMS.reduce((a,k)=>a+(+profile.bands[k]||0),0)/4).toFixed(2).replace(/0+$/,"").replace(/\.$/,""), true);
+    $("profileTags").innerHTML = (profile.weakness_tags||[]).map((t)=>'<span class="tag">'+esc(t)+'</span>').join("");
+    $("profileCard").style.display = "block";
+  }
+  // 趋势(时间正序)
+  const scored = essays.filter((e)=>e.d.scores).map((e)=>({ date: e.d.date || e.created_at.slice(0,10), scores: e.d.scores })).reverse();
+  if (scored.length >= 2) drawTrend(scored);
+  // 列表
+  const items = [];
+  for (const p of pendings) {
+    items.push('<div class="essay-item"><div class="ei-head"><div><div class="ei-title">'+esc(p.d.topic || p.title)+'</div>' +
+      '<div class="ei-meta">'+esc(p.d.task)+' · '+(p.d.words||"?")+'词 · '+esc((p.d.submitted_at||p.created_at).slice(0,10))+'</div></div>' +
+      '<span class="score-pill pending">待批</span></div></div>');
+  }
+  for (const e of essays) {
+    const d = e.d, s = d.scores || {};
+    let det = '<div class="dims">' + DIMS.map((k)=>'<span>'+k+'<b>'+ (s[k] ?? "–") +'</b></span>').join("") + '</div>';
+    if (d.evidence) { det += '<h4>评分依据</h4>' + DIMS.filter((k)=>d.evidence[k]).map((k)=>'<div class="quote"><b>'+k+'</b> '+esc(d.evidence[k])+'</div>').join(""); }
+    if (d.top3 && d.top3.length) {
+      det += '<h4>最值钱的'+d.top3.length+'个问题</h4>' + d.top3.map((t)=>
+        '<div style="margin-bottom:8px"><b>'+esc(t.issue)+'</b><div class="quote">'+esc(t.her_sentence)+'</div><div class="quote fix">'+esc(t.rewrite)+'</div></div>').join("");
+    }
+    if (d.errors && d.errors.length) {
+      det += '<h4>错误清单</h4>' + d.errors.map((er)=>'<div class="quote"><b>'+esc(er.type)+'</b> '+esc(er.sentence)+' → <span style="color:#166534">'+esc(er.fix)+'</span></div>').join("");
+    }
+    if (d.essay) det += '<h4>原文</h4><div class="essay-body">'+esc(d.essay)+'</div>';
+    items.push('<div class="essay-item" onclick="this.classList.toggle(\'open\')"><div class="ei-head">' +
+      '<div style="flex:1;min-width:0"><div class="ei-title">'+esc(d.topic || e.title)+'</div>' +
+      '<div class="ei-meta">'+esc(d.task||"")+' · '+(d.words||"?")+'词 · '+esc(d.date || e.created_at.slice(0,10))+(d.revision_of?' · 重写':'')+'</div></div>' +
+      '<span class="score-pill">'+(s.overall ?? "–")+'</span></div><div class="detail">'+det+'</div></div>');
+  }
+  $("list").innerHTML = items.length ? items.join("") : '<div class="empty">还没有作文。写一篇交上来,镜子才照得见人。</div>';
+}
+
+async function load() {
+  try {
+    const r = await fetch(API + "/ielts/essays");
+    render(await r.json());
+  } catch (e) {
+    $("list").innerHTML = '<div class="empty">加载失败,窝那边可能在打盹:' + esc(e.message) + '</div>';
+  }
+}
+load();
+</script>
+</body>
+</html>
